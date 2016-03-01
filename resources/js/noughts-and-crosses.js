@@ -7,6 +7,16 @@ var horizontalCheck = [0,3,6];
 var diagonalCheck = [0,2];
 
 // TIDY UP CODE
+// modal should pop up at start, and once won
+
+function winCondition(winner) {
+    $("#title").text(winner);
+    moves = [];
+    positions = permanentPositions;
+    for (i = 0; i < permanentPositions.length; i++) {
+        $("#" + permanentPositions[i]).text("");
+    }
+}
 
 $(document).ready(function() {
     $(".btn-default").on("click", function() {
@@ -26,53 +36,59 @@ $(document).ready(function() {
         // for each starting vertical node (on the top)
         for (i = 0; i < verticalCheck.length; i++) {
             var startNode = $("#" + permanentPositions[verticalCheck[i]]).text();
-            var win = true;
-            // if all 3 nodes are identical, then win = true
-            for (j = 0; j < 3; j++) {
-                if (startNode != $("#" + permanentPositions[verticalCheck[i]+j*3]).text()) {
-                    win = false;
+            if (startNode != "") {
+                var win = true;
+                // if all 3 nodes are identical, then win = true
+                for (j = 0; j < 3; j++) {
+                    if (startNode != $("#" + permanentPositions[verticalCheck[i]+j*3]).text()) {
+                        win = false;
+                    }
                 }
-            }
-            if (win === true) {
-                $("#title").text(startNode);
+                if (win === true) {
+                    winCondition(startNode);
+                }
             }
         }
         
         // for each starting horizontal node (on the left)
         for (i = 0; i < horizontalCheck.length; i++) {
             var startNode = $("#" + permanentPositions[horizontalCheck[i]]).text();
-            var win = true;
-            // if all 3 nodes are identical, then win = true
-            for (j = 0; j < 3; j++) {
-                if (startNode != $("#" + permanentPositions[horizontalCheck[i]+j]).text()) {
-                    win = false;
+            if (startNode != "") {
+                var win = true;
+                // if all 3 nodes are identical, then win = true
+                for (j = 0; j < 3; j++) {
+                    if (startNode != $("#" + permanentPositions[horizontalCheck[i]+j]).text()) {
+                        win = false;
+                    }
                 }
-            }
-            if (win === true) {
-                $("#title").text(startNode);
+                if (win === true) {
+                    winCondition(startNode);
+                }
             }
         }
         
         // for each starting diagonal node (top left and top right)
         for (i = 0; i < diagonalCheck.length; i++) {
             var startNode = $("#" + permanentPositions[diagonalCheck[i]]).text();
-            var win = true;
-            // if all 3 nodes are identical, then win = true
-            for (j = 0; j < 3; j++) {
-                if (i === 0) {
-                    // top left to bottom right
-                    if (startNode != $("#" + permanentPositions[diagonalCheck[i]+j*4]).text()) {
-                        win = false;
-                    }
-                } else if (i === 1) {
-                    // top right to bottom left
-                    if (startNode != $("#" + permanentPositions[diagonalCheck[i]+j*2]).text()) {
-                        win = false;
+            if (startNode != "") {
+                var win = true;
+                // if all 3 nodes are identical, then win = true
+                for (j = 0; j < 3; j++) {
+                    if (i === 0) {
+                        // top left to bottom right
+                        if (startNode != $("#" + permanentPositions[diagonalCheck[i]+j*4]).text()) {
+                            win = false;
+                        }
+                    } else if (i === 1) {
+                        // top right to bottom left
+                        if (startNode != $("#" + permanentPositions[diagonalCheck[i]+j*2]).text()) {
+                            win = false;
+                        }
                     }
                 }
-            }
-            if (win === true) {
-                $("#title").text(startNode);
+                if (win === true) {
+                    winCondition(startNode);
+                }
             }
         }
     });
