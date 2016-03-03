@@ -10,6 +10,42 @@
 
 <body>
     <div class = "container-fluid">
+
+        <!-- Modal -->
+        <div class="modal fade" id="endModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-sm text-center" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="endModalLabel"></h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary center-block" data-dismiss="modal" id="btn-reset">Play again?</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="startModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-sm text-center" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Pick a side</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <row>
+                            <div class="col-xs-6">
+                                <button type="button" class="btn btn-primary center-block" data-dismiss="modal" id="btn-nought">O</button>
+                            </div>
+                            <div class="col-xs-6">
+                                <button type="button" class="btn btn-primary center-block" data-dismiss="modal" id="btn-cross">X</button>
+                            </div>
+                        </row>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <header class = "page-header text-center">
             <h1 id ="title">Noughts and Crosses</h1>
         </header>
