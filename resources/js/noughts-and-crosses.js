@@ -74,6 +74,10 @@ $(document).ready(function() {
         opponent = $("#btn-nought").text();
     });
     
+    var compMoveIndex = Math.floor(Math.random()*positions.length);
+    $("#" + positions[compMoveIndex]).text(opponent);
+    positions.splice(compMoveIndex, 1);
+    
     $(".btn-grid").on("click", function() {
         var position = $(this).attr("id");
         var moveIndex = positions.indexOf(position);
