@@ -8,10 +8,7 @@ var diagonalCheck = [0,2];
 var player = "";
 var opponent = "";
 
-// TIDY UP CODE
-// modal should pop up at start, and once won
-
-function winCondition(winner) {
+function winCondition(winner, direction, winIndex) {
     if (winner == player) {
         $("#endModalLabel").text("You Win!");
     } else if (winner == opponent) {
@@ -19,14 +16,42 @@ function winCondition(winner) {
     } else {
         $("#endModalLabel").text("Draw!");
     }
+    if (winner != "draw") {
+        for (i = 0; i < 3; i++) {
+            if (direction == "vertical") {
+                if (winner == player) {
+                    $("#" + permanentPositions[winIndex+i*3]).addClass("btn-success");
+                } else {
+                    $("#" + permanentPositions[winIndex+i*3]).addClass("btn-danger");
+                }
+            } else if (direction == "horizontal") {
+                if (winner == player) {
+                    $("#" + permanentPositions[winIndex+i]).addClass("btn-success");
+                } else {
+                    $("#" + permanentPositions[winIndex+i]).addClass("btn-danger");
+                }
+            } else if (direction == "diagonal") {
+                if (winIndex == 0) {
+                    if (winner == player) {
+                        $("#" + permanentPositions[winIndex+i*4]).addClass("btn-success");
+                    } else {
+                        $("#" + permanentPositions[winIndex+i*4]).addClass("btn-danger");
+                    }
+                } else {
+                    if (winner == player) {
+                        $("#" + permanentPositions[winIndex+i*2]).addClass("btn-success");
+                    } else {
+                        $("#" + permanentPositions[winIndex+i*2]).addClass("btn-danger");
+                    }
+                }
+            }
+        }
+    }
     $("#endModal").modal("show");
     moves = [];
-    positions = permanentPositions;
-    for (i = 0; i < permanentPositions.length; i++) {
-        //console.log(permanentPositions[i]);
-        $("#" + permanentPositions[i]).text("");
-    }
+    positions = permanentPositions.slice();
 }
+
 
 $(document).ready(function() {
     $("#startModal").modal("show");
@@ -36,12 +61,20 @@ $(document).ready(function() {
         opponent = $("#btn-cross").text();
     });
     
+    $("#btn-reset").on("click", function() {
+        for (i = 0; i < permanentPositions.length; i++) {
+            $("#" + permanentPositions[i]).text("");
+            $("#" + permanentPositions[i]).removeClass("btn-success");
+            $("#" + permanentPositions[i]).removeClass("btn-danger");
+        }
+    });
+    
     $("#btn-cross").on("click", function() {
         player = $("#btn-cross").text();
         opponent = $("#btn-nought").text();
     });
     
-    $(".btn-default").on("click", function() {
+    $(".btn-grid").on("click", function() {
         var position = $(this).attr("id");
         var moveIndex = positions.indexOf(position);
         
@@ -52,30 +85,24 @@ $(document).ready(function() {
             $("#" + positions[compMoveIndex]).text(opponent);
             positions.splice(compMoveIndex, 1);
             
-            
-            
             // for each topmost node
-            console.log("check vertical");
             for (i = 0; i < verticalCheck.length; i++) {
                 var startNode = $("#" + permanentPositions[verticalCheck[i]]).text();
-                console.log(permanentPositions[verticalCheck[i]]);
                 if (startNode != "") {
                     var win = true;
                     // if any node under it is not identical, there is not a match (win = false)
                     for (j = 0; j < 3; j++) {
                         if (startNode != $("#" + permanentPositions[verticalCheck[i]+j*3]).text()) {
-                            console.log(startNode + " " + $("#" + permanentPositions[verticalCheck[i]+j*3]).text());
                             win = false;
                         }
                     }
                     if (win === true) {
-                        winCondition(startNode);
+                        winCondition(startNode, "vertical", verticalCheck[i]);
                     }
                 }
             }
 
             // for each leftmost node
-            console.log("check horizontal");
             for (i = 0; i < horizontalCheck.length; i++) {
                 var startNode = $("#" + permanentPositions[horizontalCheck[i]]).text();
                 if (startNode != "") {
@@ -83,18 +110,16 @@ $(document).ready(function() {
                     // if any node to the right of it is not identical, there is not a match (win = false)
                     for (j = 0; j < 3; j++) {
                         if (startNode != $("#" + permanentPositions[horizontalCheck[i]+j]).text()) {
-                            console.log(startNode + " " + $("#" + permanentPositions[verticalCheck[i]+j]).text()); 
                             win = false;
                         }
                     }
                     if (win === true) {
-                        winCondition(startNode);
+                        winCondition(startNode, "horizontal", horizontalCheck[i]);
                     }
                 }
             }
 
             // for each starting diagonal node (top left and top right)
-            console.log("check diagonal");
             for (i = 0; i < diagonalCheck.length; i++) {
                 var startNode = $("#" + permanentPositions[diagonalCheck[i]]).text();
                 if (startNode != "") {
@@ -104,27 +129,23 @@ $(document).ready(function() {
                         if (i === 0) {
                             // top left to bottom right
                             if (startNode != $("#" + permanentPositions[diagonalCheck[i]+j*4]).text()) {
-                                console.log(startNode + " " + $("#" + permanentPositions[verticalCheck[i]+j*4]).text()); 
                                 win = false;
                             }
                         } else if (i === 1) {
                             // top right to bottom left
                             if (startNode != $("#" + permanentPositions[diagonalCheck[i]+j*2]).text()) {
-                                console.log(startNode + " " + $("#" + permanentPositions[verticalCheck[i]+j*2]).text());
                                 win = false;
                             }
                         }
                     }
                     if (win === true) {
-                        winCondition(startNode);
+                        winCondition(startNode, "diagonal", diagonalCheck[i]);
                     }
                 }
             }
             //checking for a draw
-            
             if (positions.length == 0) {
-                console.log("check draw");
-                winCondition("draw");
+                winCondition("draw", null);
             }
         }
     }); 
