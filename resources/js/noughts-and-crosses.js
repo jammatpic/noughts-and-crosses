@@ -54,13 +54,14 @@ $(document).ready(function() {
             
             
             
-            // for each starting vertical node (on the top)
+            // for each topmost node
             console.log("check vertical");
             for (i = 0; i < verticalCheck.length; i++) {
                 var startNode = $("#" + permanentPositions[verticalCheck[i]]).text();
+                console.log(permanentPositions[verticalCheck[i]]);
                 if (startNode != "") {
                     var win = true;
-                    // if all 3 nodes are identical, then win = true
+                    // if any node under it is not identical, there is not a match (win = false)
                     for (j = 0; j < 3; j++) {
                         if (startNode != $("#" + permanentPositions[verticalCheck[i]+j*3]).text()) {
                             console.log(startNode + " " + $("#" + permanentPositions[verticalCheck[i]+j*3]).text());
@@ -73,14 +74,13 @@ $(document).ready(function() {
                 }
             }
 
-            // for each starting horizontal node (on the left)
+            // for each leftmost node
             console.log("check horizontal");
             for (i = 0; i < horizontalCheck.length; i++) {
                 var startNode = $("#" + permanentPositions[horizontalCheck[i]]).text();
                 if (startNode != "") {
                     var win = true;
-                    // if all 3 nodes are identical, then win = true
-                    
+                    // if any node to the right of it is not identical, there is not a match (win = false)
                     for (j = 0; j < 3; j++) {
                         if (startNode != $("#" + permanentPositions[horizontalCheck[i]+j]).text()) {
                             console.log(startNode + " " + $("#" + permanentPositions[verticalCheck[i]+j]).text()); 
@@ -99,7 +99,7 @@ $(document).ready(function() {
                 var startNode = $("#" + permanentPositions[diagonalCheck[i]]).text();
                 if (startNode != "") {
                     var win = true;
-                    // if all 3 nodes are identical, then win = true
+                    // if any node in to its right/left diagonal is not identical, there is not a match (win = false)
                     for (j = 0; j < 3; j++) {
                         if (i === 0) {
                             // top left to bottom right
@@ -110,7 +110,7 @@ $(document).ready(function() {
                         } else if (i === 1) {
                             // top right to bottom left
                             if (startNode != $("#" + permanentPositions[diagonalCheck[i]+j*2]).text()) {
-                                console.log(startNode + " " + $("#" + permanentPositions[verticalCheck[i]+j]).text());
+                                console.log(startNode + " " + $("#" + permanentPositions[verticalCheck[i]+j*2]).text());
                                 win = false;
                             }
                         }
