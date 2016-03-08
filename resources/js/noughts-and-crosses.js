@@ -8,6 +8,12 @@ var diagonalCheck = [0,2];
 var player = "";
 var opponent = "";
 
+function compMove() {
+    var compMoveIndex = Math.floor(Math.random()*positions.length);
+    $("#" + positions[compMoveIndex]).text(opponent);
+    positions.splice(compMoveIndex, 1);
+}
+
 function winCondition(winner, direction, winIndex) {
     if (winner == player) {
         $("#endModalLabel").text("You Win!");
@@ -59,6 +65,7 @@ $(document).ready(function() {
     $("#btn-nought").on("click", function() {
         player = $("#btn-nought").text();
         opponent = $("#btn-cross").text();
+        compMove();
     });
     
     $("#btn-reset").on("click", function() {
@@ -67,16 +74,14 @@ $(document).ready(function() {
             $("#" + permanentPositions[i]).removeClass("btn-success");
             $("#" + permanentPositions[i]).removeClass("btn-danger");
         }
+        compMove();
     });
     
     $("#btn-cross").on("click", function() {
         player = $("#btn-cross").text();
         opponent = $("#btn-nought").text();
+        compMove();
     });
-    
-    var compMoveIndex = Math.floor(Math.random()*positions.length);
-    $("#" + positions[compMoveIndex]).text(opponent);
-    positions.splice(compMoveIndex, 1);
     
     $(".btn-grid").on("click", function() {
         var position = $(this).attr("id");
@@ -85,9 +90,7 @@ $(document).ready(function() {
         if ($(this).text() != "X" && $(this).text() != "O") {
             $("#" + position).text(player);
             positions.splice(moveIndex, 1);
-            var compMoveIndex = Math.floor(Math.random()*positions.length);
-            $("#" + positions[compMoveIndex]).text(opponent);
-            positions.splice(compMoveIndex, 1);
+            compMove();
             
             // for each topmost node
             for (i = 0; i < verticalCheck.length; i++) {
