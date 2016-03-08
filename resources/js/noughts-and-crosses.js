@@ -22,6 +22,7 @@ function winCondition(winner, direction, winIndex) {
     } else {
         $("#endModalLabel").text("Draw!");
     }
+    // adding highlighting if player or computer wins
     if (winner != "draw") {
         for (i = 0; i < 3; i++) {
             if (direction == "vertical") {
@@ -88,10 +89,14 @@ $(document).ready(function() {
         var moveIndex = positions.indexOf(position);
         
         if ($(this).text() != "X" && $(this).text() != "O") {
+            // player move
             $("#" + position).text(player);
             positions.splice(moveIndex, 1);
+            
+            // computer move
             compMove();
             
+            // checking for win conditions
             // for each topmost node
             for (i = 0; i < verticalCheck.length; i++) {
                 var startNode = $("#" + permanentPositions[verticalCheck[i]]).text();
